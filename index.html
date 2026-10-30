@@ -68,6 +68,11 @@
   .secondary{width:100%;min-height:58px;border:1.5px solid var(--ink);border-radius:6px;background:#fff;font-weight:700;font-size:20px;cursor:pointer;margin-top:12px}
   .poster-preview{width:100%;border:1px solid var(--line);border-radius:8px;display:block;margin:8px 0 18px;background:var(--tile);aspect-ratio:4/5}
   .ok{color:var(--ok);font-weight:700;margin:12px 0 0}
+  .radio{display:flex;align-items:center;gap:12px;min-height:56px;padding:0 14px;border:1.5px solid var(--line);border-radius:6px;margin-bottom:8px;cursor:pointer;font-size:19px}
+  .radio input{width:24px;height:24px;accent-color:#1A1A1A;flex:none}
+  .radio:has(input:checked){border-color:var(--ink);box-shadow:inset 0 0 0 1px var(--ink);font-weight:700}
+  .field input[type=date]{direction:rtl;text-align:right}
+  .srow .who{font-size:17px;color:var(--ink-2)}
   .status-link{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;min-height:54px;margin:0 0 28px;border:1.5px solid var(--ink);border-radius:6px;background:#fff;font-weight:700;font-size:18px;cursor:pointer}
   .status-link svg{width:22px;height:22px}
   .slist{display:grid;gap:12px;margin-top:16px}
@@ -120,7 +125,7 @@
 <div class="wrap hide" id="v-status">
   <button class="back" data-go="shop">&rarr; العودة إلى المشاريع</button>
   <h1>المشاريع المرسلة</h1>
-  <p class="intro">ابحث عن رقم مشروعك لتعرف حالته. لا تظهر الأسماء ولا الملاحظات هنا.</p>
+  <p class="intro">ابحث عن مشروعك لتعرف حالته. لا تظهر الملاحظات هنا.</p>
   <p class="msg" id="statusMsg" role="status"></p>
   <div class="slist" id="slist"></div>
   <button class="secondary" id="statusRefresh">تحديث القائمة</button>
@@ -129,7 +134,7 @@
 <!-- الخطوة 1: الاسم -->
 <div class="wrap hide" id="v-name">
   <button class="back" data-go="shop">&rarr; تغيير المشروع</button>
-  <div class="steps"><span class="on">1. الاسم</span><span>&lsaquo;</span><span>2. الملاحظات</span><span>&lsaquo;</span><span>3. تم</span></div>
+  <div class="steps"><span class="on">1. الاسم</span><span>&lsaquo;</span><span>2. الملاحظات</span><span>&lsaquo;</span><span>3. الموعد</span><span>&lsaquo;</span><span>4. تم</span></div>
   <h1>من بطل هذا المشروع؟</h1>
   <div class="form-wrap">
     <div class="chosen" id="chosen1"></div>
@@ -145,7 +150,7 @@
 <!-- الخطوة 2: الملاحظات -->
 <div class="wrap hide" id="v-notes">
   <button class="back" data-go="name">&rarr; رجوع</button>
-  <div class="steps"><span>1. الاسم</span><span>&lsaquo;</span><span class="on">2. الملاحظات</span><span>&lsaquo;</span><span>3. تم</span></div>
+  <div class="steps"><span>1. الاسم</span><span>&lsaquo;</span><span class="on">2. الملاحظات</span><span>&lsaquo;</span><span>3. الموعد</span><span>&lsaquo;</span><span>4. تم</span></div>
   <h1 id="notesTitle">هل لديك ملاحظات خاصة؟</h1>
   <div class="form-wrap">
     <div class="field">
@@ -154,13 +159,36 @@
       <textarea id="knotes"></textarea>
     </div>
     <p class="msg" id="notesMsg" role="alert"></p>
+    <button class="primary" id="toDeadline">التالي</button>
+  </div>
+</div>
+
+<!-- الخطوة 3: الموعد -->
+<div class="wrap hide" id="v-deadline">
+  <button class="back" data-go="notes">&rarr; رجوع</button>
+  <div class="steps"><span>1. الاسم</span><span>&lsaquo;</span><span>2. الملاحظات</span><span>&lsaquo;</span><span class="on">3. الموعد</span><span>&lsaquo;</span><span>4. تم</span></div>
+  <h1>متى تريدون المشروع جاهزًا؟</h1>
+  <div class="form-wrap">
+    <fieldset class="field" style="border:0;padding:0;margin:0 0 22px">
+      <legend style="font-weight:700;margin-bottom:8px;padding:0">الموعد المطلوب</legend>
+      <label class="radio"><input type="radio" name="dl" value="7"> خلال أسبوع</label>
+      <label class="radio"><input type="radio" name="dl" value="14"> خلال أسبوعين</label>
+      <label class="radio"><input type="radio" name="dl" value="30"> خلال شهر</label>
+      <label class="radio"><input type="radio" name="dl" value="pick"> تاريخ محدد</label>
+      <div class="field hide" id="pickWrap" style="margin:8px 0 0">
+        <label for="dlDate">اختر التاريخ</label>
+        <input type="date" id="dlDate">
+      </div>
+    </fieldset>
+    <p class="hint" id="dlShow" style="font-weight:700;color:var(--ink)"></p>
+    <p class="msg" id="dlMsg" role="alert"></p>
     <button class="primary" id="toShare">إرسال المشروع</button>
   </div>
 </div>
 
 <!-- الخطوة 3: المشاركة -->
 <div class="wrap hide" id="v-share">
-    <div class="steps"><span>1. الاسم</span><span>&lsaquo;</span><span>2. الملاحظات</span><span>&lsaquo;</span><span class="on">3. تم</span></div>
+    <div class="steps"><span>1. الاسم</span><span>&lsaquo;</span><span>2. الملاحظات</span><span>&lsaquo;</span><span>3. الموعد</span><span>&lsaquo;</span><span class="on">4. تم</span></div>
   <h1>تم إرسال المشروع</h1>
   <p class="intro">شكرًا لك. وصل المشروع وسيتواصل معكم أحمد قريبًا.</p>
   <div class="form-wrap">
@@ -213,7 +241,7 @@ async function saveProject(){
   const r = await fetch(SB_URL + '/rest/v1/project_requests?select=id', {
     method:'POST',
     headers:{ apikey: SB_KEY, 'Content-Type':'application/json', Prefer:'return=representation' },
-    body: JSON.stringify({ category_id: chosen, category_title: cat(chosen).t, hero_name: $('kname').value.trim(), notes: notes || null })
+    body: JSON.stringify({ category_id: chosen, category_title: cat(chosen).t, hero_name: $('kname').value.trim(), notes: notes || null, deadline: deadlineIso() })
   });
   if (!r.ok) throw new Error(await r.text());
   try { const rows = await r.json(); return rows && rows[0] ? rows[0].id : null; } catch(e){ return null; }
@@ -238,9 +266,9 @@ function successSound(){
   }catch(e){}
 }
 let modalReturn = null;
-function openModal(project, hero, id){
+function openModal(project, hero, id, dl){
   const num = id ? ` (رقم المشروع ${id})` : '';
-  const msg = `السلام عليكم، أرسلت مشروع «${project}»${num} للبطل/البطلة ${hero} عبر صفحة اختيار المشروع.`;
+  const msg = `السلام عليكم، أرسلت مشروع «${project}»${num} للبطل/البطلة ${hero}، والموعد المطلوب ${fmtDay(dl)}، عبر صفحة اختيار المشروع.`;
   $('myNum').classList.toggle('hide', !id);
   $('myNum').textContent = id ? `رقم مشروعك: ${id}` : '';
   $('waBtn').href = 'https://wa.me/966535318264?text=' + encodeURIComponent(msg);
@@ -269,7 +297,7 @@ function chime(){
 
 /* ---------- views ---------- */
 function show(v){
-  ['shop','status','name','notes','share'].forEach(n => $('v-'+n).classList.toggle('hide', n !== v));
+  ['shop','status','name','notes','deadline','share'].forEach(n => $('v-'+n).classList.toggle('hide', n !== v));
   if (v === 'status') loadStatus();
   window.scrollTo(0,0);
   const h = $('v-'+v).querySelector('h1'); if (h){ h.tabIndex = -1; h.focus({preventScroll:true}); }
@@ -297,6 +325,28 @@ function renderChosen(){
   const c = cat(chosen);
   $('chosen1').innerHTML = `<div class="tile"><img src="${IMAGES[c.id]}" alt=""></div>
     <div><div class="lab">المشروع المختار</div><h3>${c.t}</h3><button data-go="shop">تغيير</button></div>`;
+}
+
+/* ---------- deadline ---------- */
+const isoDay = d => `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+const fmtDay = iso => iso ? new Date(iso + 'T12:00:00').toLocaleDateString('ar', { weekday:'long', day:'numeric', month:'long', year:'numeric' }) : '';
+function deadlineIso(){
+  const r = document.querySelector('input[name=dl]:checked');
+  if (!r) return null;
+  if (r.value === 'pick') return $('dlDate').value || null;
+  const d = new Date(); d.setDate(d.getDate() + Number(r.value)); return isoDay(d);
+}
+function updateDeadline(){
+  const r = document.querySelector('input[name=dl]:checked');
+  $('pickWrap').classList.toggle('hide', !r || r.value !== 'pick');
+  const iso = deadlineIso();
+  $('dlShow').textContent = iso ? 'الموعد: ' + fmtDay(iso) : '';
+  $('dlMsg').textContent = '';
+}
+document.addEventListener('change', e => { if (e.target.name === 'dl' || e.target.id === 'dlDate') updateDeadline(); });
+function resetDeadline(){
+  document.querySelectorAll('input[name=dl]').forEach(x => x.checked = false);
+  $('dlDate').value = ''; updateDeadline();
 }
 
 /* ---------- poster ---------- */
@@ -353,6 +403,14 @@ async function makePoster(){
   y += 64; ctx.fillStyle = '#666666'; ctx.font = `500 32px ${FONT}`; ctx.fillText('البطل / البطلة', W-P, y);
   y += 64; ctx.fillStyle = '#1A1A1A'; ctx.font = `700 54px ${FONT}`; ctx.fillText(name, W-P, y);
 
+  // deadline
+  const dlIso = deadlineIso();
+  if (dlIso){
+    y += 56; ctx.fillStyle = '#DDDAD4'; ctx.fillRect(P, y, W-2*P, 2);
+    y += 64; ctx.fillStyle = '#666666'; ctx.font = `500 32px ${FONT}`; ctx.fillText('الموعد المطلوب', W-P, y);
+    y += 60; ctx.fillStyle = '#1A1A1A'; ctx.font = `700 44px ${FONT}`; ctx.fillText(fmtDay(dlIso), W-P, y);
+  }
+
   // notes
   if (notes){
     y += 56; ctx.fillStyle = '#DDDAD4'; ctx.fillRect(P, y, W-2*P, 2);
@@ -391,14 +449,14 @@ document.addEventListener('click', e => {
 async function loadStatus(){
   $('statusMsg').textContent = 'جارٍ التحميل…'; $('statusMsg').style.color = 'var(--muted)';
   try{
-    const r = await fetch(SB_URL + '/rest/v1/project_requests?select=id,created_at,category_title,status&order=created_at.desc&limit=200', { headers:{ apikey: SB_KEY } });
+    const r = await fetch(SB_URL + '/rest/v1/project_requests?select=id,created_at,category_title,hero_name,deadline,status&order=created_at.desc&limit=200', { headers:{ apikey: SB_KEY } });
     if (!r.ok) throw 0;
     const rows = await r.json();
     $('statusMsg').textContent = rows.length ? '' : 'لا توجد مشاريع مرسلة بعد.';
     $('slist').innerHTML = rows.map(x => {
       const d = new Date(x.created_at).toLocaleDateString('ar', { day:'numeric', month:'long', year:'numeric' });
       const done = x.status === 'done';
-      return `<div class="srow"><span class="num">${x.id}</span><div><div class="ttl">${esc(x.category_title)}</div><div class="dt">${d}</div></div><span class="sbadge ${done ? 'done' : 'new'}">${done ? 'تم الإنجاز' : 'تم الاستلام'}</span></div>`;
+      return `<div class="srow"><span class="num">${x.id}</span><div><div class="ttl">${esc(x.category_title)}</div><div class="who">البطل / البطلة: ${esc(x.hero_name)}</div><div class="dt">أُرسل ${d}${x.deadline ? ' · الموعد ' + new Date(x.deadline + 'T12:00:00').toLocaleDateString('ar', { day:'numeric', month:'long' }) : ''}</div></div><span class="sbadge ${done ? 'done' : 'new'}">${done ? 'تم الإنجاز' : 'تم الاستلام'}</span></div>`;
     }).join('');
   }catch(e){
     $('statusMsg').style.color = 'var(--err)';
@@ -421,28 +479,37 @@ $('toNotes').onclick = () => {
   show('notes');
 };
 
-$('toShare').onclick = async () => {
+$('toDeadline').onclick = () => {
   if (chosen === 'custom' && !$('knotes').value.trim()){ $('notesMsg').textContent = 'يرجى كتابة فكرة المشروع.'; $('knotes').focus(); return; }
   $('notesMsg').textContent = '';
+  $('dlDate').min = isoDay(new Date());
+  show('deadline');
+};
+
+$('toShare').onclick = async () => {
+  const dl = deadlineIso();
+  if (!dl){ $('dlMsg').textContent = document.querySelector('input[name=dl]:checked') ? 'يرجى اختيار التاريخ.' : 'يرجى اختيار موعد للمشروع.'; return; }
+  if (dl < isoDay(new Date())){ $('dlMsg').textContent = 'يرجى اختيار تاريخ من اليوم فصاعدًا.'; return; }
+  $('dlMsg').textContent = '';
   const b = $('toShare'); b.disabled = true; b.textContent = 'جارٍ الإرسال…';
   let projectId = null;
   try { projectId = await saveProject(); }
-  catch(e){ $('notesMsg').textContent = 'تعذّر الإرسال. تأكد من الاتصال بالإنترنت ثم حاول مرة أخرى.'; b.disabled = false; b.textContent = 'إرسال المشروع'; return; }
+  catch(e){ $('dlMsg').textContent = 'تعذّر الإرسال. تأكد من الاتصال بالإنترنت ثم حاول مرة أخرى.'; b.disabled = false; b.textContent = 'إرسال المشروع'; return; }
   posterBlob = await makePoster();
   const old = $('posterImg').src; if (old.startsWith('blob:')) URL.revokeObjectURL(old);
   $('posterImg').src = URL.createObjectURL(posterBlob);
   b.disabled = false; b.textContent = 'إرسال المشروع';
   show('share');
-  openModal(cat(chosen).t, $('kname').value.trim(), projectId);
+  openModal(cat(chosen).t, $('kname').value.trim(), projectId, dl);
   // the project is saved: empty the bag so it can't be sent twice by mistake
-  chosen = null; $('kname').value = ''; $('knotes').value = '';
+  chosen = null; $('kname').value = ''; $('knotes').value = ''; resetDeadline();
   renderGrid(); renderBag();
 };
 
 
 $('again').onclick = () => {
   chosen = null; posterBlob = null;
-  $('kname').value = ''; $('knotes').value = '';
+  $('kname').value = ''; $('knotes').value = ''; resetDeadline();
   renderGrid(); renderBag(); show('shop');
 };
 

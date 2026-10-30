@@ -35,6 +35,7 @@
   .card.done{background:var(--tile)}
   .row{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap}
   .cat{font-size:15px;color:var(--muted)}
+  .dl{font-weight:700;font-size:16px;margin-top:2px}
   .hero{font-size:22px;font-weight:700;margin:2px 0}
   .badge{font-size:14px;font-weight:700;padding:2px 10px;border-radius:4px;border:1px solid var(--line);background:#fff}
   .badge.new{background:var(--ok-bg);color:var(--ok);border-color:transparent}
@@ -105,7 +106,7 @@ function render(){
     const done = r.status === 'done';
     return `<article class="card${done ? ' done' : ''}">
       <div class="row">
-        <div><div class="cat">${esc(r.category_title)}</div><div class="hero">${esc(r.hero_name)}</div><div class="cat">${d}</div></div>
+        <div><div class="cat">${esc(r.category_title)}</div><div class="hero">${esc(r.hero_name)}</div><div class="cat">أُرسل ${d}</div>${r.deadline ? `<div class="dl">الموعد المطلوب: ${new Date(r.deadline + 'T12:00:00').toLocaleDateString('ar', { weekday:'long', day:'numeric', month:'long', year:'numeric' })}</div>` : ''}</div>
         <span class="badge${done ? '' : ' new'}">${done ? 'منجز' : 'جديد'}</span>
       </div>
       ${r.notes ? `<p class="notes">${esc(r.notes)}</p>` : ''}
