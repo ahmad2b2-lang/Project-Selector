@@ -55,9 +55,9 @@
 
 <div class="wrap hide" id="v-login">
   <h1>تسجيل الدخول</h1>
-  <p class="muted">هذه الصفحة لأحمد فقط.</p>
+  <p class="muted">هذه الصفحة لأحمد فقط. اكتب كلمة المرور نفسها التي تستخدمها في تطبيق المنتجات.</p>
   <form id="loginForm">
-    <div class="field"><label for="email">البريد الإلكتروني</label><input id="email" type="email" autocomplete="username" required></div>
+    <input type="hidden" id="email" autocomplete="username" value="admin@product-card-maker.app">
     <div class="field"><label for="pw">كلمة المرور</label><input id="pw" type="password" autocomplete="current-password" required></div>
     <p class="msg" id="loginMsg" role="alert"></p>
     <button class="primary" type="submit">دخول</button>
@@ -135,8 +135,8 @@ document.addEventListener('click', async e => {
 
 $('loginForm').onsubmit = async e => {
   e.preventDefault(); $('loginMsg').textContent = '';
-  const { error } = await sb.auth.signInWithPassword({ email: $('email').value.trim(), password: $('pw').value });
-  if (error){ $('loginMsg').textContent = 'البريد أو كلمة المرور غير صحيحة.'; return; }
+  const { error } = await sb.auth.signInWithPassword({ email: 'admin@product-card-maker.app', password: $('pw').value });
+  if (error){ $('loginMsg').textContent = 'كلمة المرور غير صحيحة.'; return; }
   view('list'); load();
 };
 $('logout').onclick = async () => { await sb.auth.signOut(); rows = []; view('login'); };
