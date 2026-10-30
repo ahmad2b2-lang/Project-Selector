@@ -78,7 +78,10 @@
 </div>
 
 <script>
-const sb = supabase.createClient('https://bhfgwlkzkbwcwyoypwhy.supabase.co', 'sb_publishable_9YylflVQca-62NHsBKSTeA_GY896nj3');
+// own sign-in, kept separate from the other apps on this site
+const sb = supabase.createClient('https://bhfgwlkzkbwcwyoypwhy.supabase.co', 'sb_publishable_9YylflVQca-62NHsBKSTeA_GY896nj3', {
+  auth: { storageKey: 'project-selector-admin', storage: window.sessionStorage }
+});
 const $ = id => document.getElementById(id);
 const esc = s => String(s ?? '').replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
 let rows = [], filter = 'new';
